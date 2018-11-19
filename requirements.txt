@@ -1,0 +1,11 @@
+python-dateutil
+aiohttp
+pytz
+pyyaml
+requests[security]
+flake8
+wheel
+robotframework
+selenium
+docutils
+robotframework-selenium2library
