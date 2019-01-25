@@ -3,6 +3,7 @@ aiohttp
 pytz
 pyyaml
 requests[security]
+twine
 flake8
 wheel
 robotframework
