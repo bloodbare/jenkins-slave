@@ -8,5 +8,6 @@ flake8
 wheel
 robotframework
 selenium
+molotov
 docutils
 robotframework-selenium2library
