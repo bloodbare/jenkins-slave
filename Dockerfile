@@ -22,6 +22,7 @@ RUN apt-get update -y \
         golang \
         jmeter \
         golang \
+        libsqlite3-dev \
         python-requests \
         python-pip \
         sudo \
@@ -223,7 +224,7 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
     && rm google-chrome-stable_current_amd64.deb chromedriver_linux64.zip
 
 
-RUN curl https://storage.googleapis.com/kubernetes-helm/helm-v2.14.3-linux-amd64.tar.gz -o /tmp/helm.tgz \
+RUN curl https://storage.googleapis.com/kubernetes-helm/helm-v2.12.1-linux-amd64.tar.gz -o /tmp/helm.tgz \
     && tar -zxvf /tmp/helm.tgz -C /tmp/ \
     && mv /tmp/linux-amd64/helm /usr/local/bin/helm \
     && su - jenkins -c "helm init --client-only"
