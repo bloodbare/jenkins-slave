@@ -12,7 +12,7 @@ RUN apt-get update -y \
     && apt-get update -y \
     && apt-get install -y \
         google-cloud-sdk \
-        docker-ce-cli=5:18.09.7~3-0~debian-stretch \
+        docker-ce-cli \
         xdg-utils libxss1 \
         fonts-liberation \
         libappindicator3-1 \
@@ -22,6 +22,7 @@ RUN apt-get update -y \
         golang \
         jmeter \
         golang \
+		libgbm1 \
         libsqlite3-dev \
         python-requests \
         python-pip \
@@ -224,17 +225,14 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
     && rm google-chrome-stable_current_amd64.deb chromedriver_linux64.zip
 
 
-RUN curl https://storage.googleapis.com/kubernetes-helm/helm-v2.12.1-linux-amd64.tar.gz -o /tmp/helm.tgz \
+RUN curl https://get.helm.sh/helm-v3.2.2-linux-amd64.tar.gz -o /tmp/helm.tgz \
     && tar -zxvf /tmp/helm.tgz -C /tmp/ \
-    && mv /tmp/linux-amd64/helm /usr/local/bin/helm \
-    && su - jenkins -c "helm init --client-only"
+    && mv /tmp/linux-amd64/helm /usr/local/bin/helm
 
 
-RUN curl -L "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz" \
+RUN curl -L "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v2.0.1/docker-credential-gcr_linux_amd64-2.0.1.tar.gz" \
   | tar xz --to-stdout ./docker-credential-gcr \
   > /usr/bin/docker-credential-gcr && chmod +x /usr/bin/docker-credential-gcr
-
-RUN curl -L https://storage.googleapis.com/minikube/releases/v1.4.0/minikube-linux-amd64 -o /usr/local/bin/minikube && chmod +x /usr/local/bin/minikube 
 
 COPY sudoers /etc/
 
