@@ -14,8 +14,8 @@ robotframework-selenium2library
 httptools
 sentry_sdk
 aioredis
-aioclustermanager>=0.3.23
-guillotina>=6.0.0a11
+aioclustermanager==0.3.26
+guillotina
 guillotina_gcloudstorage
 asyncio-nats-client
 asyncio-nats-streaming
@@ -23,4 +23,6 @@ html2text
 aiosmtplib
 uvicorn
 guillotina_pgfield>=1.0.1
-backoff==1.10.0
+backoff
+pytest_docker_fixtures
+crcmod
