@@ -38,12 +38,14 @@ RUN apt-get update -y \
     && apt-get install -y -f \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
+ENV NVM_DIR /usr/local/nvm
 
-RUN bash -c 'source $HOME/.nvm/nvm.sh   && \
+RUN mkdir -p /usr/local/nvm && chown jenkins /usr/local/nvm && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
+
+RUN bash -c 'source /usr/local/nvm/nvm.sh   && \
     nvm install node                    && \
     npm install -g doctoc urchin eclint dockerfile_lint && \
-    npm install --prefix "$HOME/.nvm/" && \
+    npm install --prefix "/usr/local/nvm/" && \
 	nvm install v10.20.1 && \
 	nvm install v12.16.0 && \
 	nvm alias default v12.16.0 && \
@@ -179,7 +181,7 @@ COPY requirements.txt /
 RUN /usr/local/bin/pip3.8 install -r /requirements.txt
 
 
-RUN bash -c 'source $HOME/.nvm/nvm.sh && nvm use v10.20.1 && yarn global add cypress newman'
-RUN bash -c 'source $HOME/.nvm/nvm.sh && nvm use default && yarn global add cypress newman'
+RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use v10.20.1 && yarn global add cypress newman'
+RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use default && yarn global add cypress newman'
 
 USER jenkins
