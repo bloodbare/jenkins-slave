@@ -21,15 +21,42 @@ RUN apt-get update -y \
         jq \
         golang \
         jmeter \
+		mplayer \
+		zip \
+		libgtk2.0-0 \
+		libgtk-3-0 \
+		libnotify-dev \
+		libgconf-2-4 \
+		libgbm-dev \
+		libnss3 \
+		libxss1 \
+		libasound2 \
+		libxtst6 \
+		xauth \
+		xvfb \
+		# install Chinese fonts
+		# this list was copied from https://github.com/jim3ma/docker-leanote
+		fonts-arphic-bkai00mp \
+		fonts-arphic-bsmi00lp \
+		fonts-arphic-gbsn00lp \
+		fonts-arphic-gkai00mp \
+		fonts-arphic-ukai \
+		fonts-arphic-uming \
+		ttf-wqy-zenhei \
+		ttf-wqy-microhei \
+		xfonts-wqy \
         golang \
 		libgbm1 \
         libsqlite3-dev \
         python-requests \
+		fonts-liberation \
+		libappindicator3-1 \
+		xdg-utils \
         python-pip \
         sudo \
         libbluetooth-dev \
-		    tk-dev \
-		    uuid-dev \
+		tk-dev \
+		uuid-dev \
         build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget\
         kubectl\
     && chown -R jenkins /home/jenkins \
@@ -155,19 +182,24 @@ RUN set -ex; \
 
 RUN git lfs install
 
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
-    && wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip -d /usr/bin \
-    && chmod +x /usr/bin/chromedriver \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && rm google-chrome-stable_current_amd64.deb chromedriver_linux64.zip
+ENV CHROME_VERSION 81.0.4044.113
+RUN wget -O /usr/src/google-chrome-stable_current_amd64.deb "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb" && \
+  dpkg -i /usr/src/google-chrome-stable_current_amd64.deb ; \
+  apt-get install -f -y && \
+  rm -f /usr/src/google-chrome-stable_current_amd64.deb
+RUN google-chrome --version
 
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 RUN curl https://get.helm.sh/helm-v3.2.2-linux-amd64.tar.gz -o /tmp/helm.tgz \
     && tar -zxvf /tmp/helm.tgz -C /tmp/ \
     && mv /tmp/linux-amd64/helm /usr/local/bin/helm
 
+ARG FIREFOX_VERSION=75.0
+RUN wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 \
+  && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
+  && rm /tmp/firefox.tar.bz2 \
+  && ln -fs /opt/firefox/firefox /usr/bin/firefox
 
 RUN curl -L "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v2.0.1/docker-credential-gcr_linux_amd64-2.0.1.tar.gz" \
   | tar xz --to-stdout ./docker-credential-gcr \
