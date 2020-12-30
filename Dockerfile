@@ -3,7 +3,7 @@ FROM jenkins/jnlp-slave
 USER root
 
 RUN apt-get update -y \
-    && apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common \
+    && apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common rsync\
     && apt-get remove -y docker docker-engine docker.io runc \
     && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
     && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - \
@@ -213,7 +213,7 @@ COPY requirements.txt /
 RUN /usr/local/bin/pip3.8 install -r /requirements.txt
 
 
-RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use v10.20.1 && yarn global add cypress newman'
-RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use default && yarn global add cypress newman'
+RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use v10.20.1'
+RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use default'
 
 USER jenkins
