@@ -216,4 +216,8 @@ RUN /usr/local/bin/pip3.8 install -r /requirements.txt
 RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use v10.20.1'
 RUN bash -c 'source /usr/local/nvm/nvm.sh && nvm use default'
 
+RUN apt-get update -y \
+    && apt-get install -y xvfb \
+	&& rm -rf /var/lib/apt/lists/*
+
 USER jenkins
